@@ -1,0 +1,1 @@
+MATCH (n:Book) DETACH DELETE n

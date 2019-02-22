@@ -1,0 +1,7 @@
+POST http://sprcom-api-gateway-qa.dev.cf.private.springer.com/graphql
+Content-Type: application/json
+Accept: application/json
+
+{"query" : "{edition(isbn: \"978-1-4842-3041-1\") {title, subTitle, productCategory, productMarketCodes{mainSubjectCode,  productMarketCode{term}},keywords{value}}}"}
+
+###
