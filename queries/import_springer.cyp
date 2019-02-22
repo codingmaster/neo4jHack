@@ -27,4 +27,16 @@ MERGE (pmc: PMC {
      id: pmcs.value,
      value: pmcs.term
 })
-MERGE (book)-[r:HAS_PMC]->(pmc);
+MERGE (book)-[r:HAS_PMC]->(pmc)
+WITH book, result
+UNWIND result.originators as originators
+FOREACH (x IN CASE WHEN originators.firstName IS NULL OR originators.lastName IS NULL THEN [] ELSE [1] END |
+     MERGE (originator: Originator{
+       id: originators.firstName + " " + originators.lastName,
+       firstName: originators.firstName,
+       lastName: originators.lastName,
+       type: originators.originatorType
+     })
+     MERGE (book)-[r:HAS_ORIGINATOR]->(originator)
+);
+
