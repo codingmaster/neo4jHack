@@ -14,7 +14,7 @@ ON CREATE SET char.name = results.name,
 char.description = results.description,
 char.thumbnail = results.thumbnail.path + "." + results.thumbnail.extension,
 char.resourceURI = results.resourceURI',
-{batchSize:10000, iterateList:true, parallel:true, params:{suffix: "&orderBy=name&limit=100&ts=20190125134059&apikey=33ee2485d7f3b3639ed66a4727ae1f6e&hash=7fac0f76a8346d00de626fa4271cfb8e", prefix: "http://gateway.marvel.com/v1/public/characters?nameStartsWith="}});
+{batchSize:10000, iterateList:true, parallel:true, params:{suffix: "&orderBy=name&limit=100&ts=20190322093523&apikey=33ee2485d7f3b3639ed66a4727ae1f6e&hash=c8d1cc450c721b237abad248732cdd0f", prefix: "http://gateway.marvel.com/v1/public/characters?nameStartsWith="}});
 
 
 CALL apoc.periodic.iterate(
@@ -65,7 +65,7 @@ MERGE (event:Event {id: toInt(split(item.resourceURI,"/")[-1])})
 ON CREATE SET event.name = item.name,
 event.resourceURI = item.resourceURI
 MERGE (comic)-[r5:PART_OF]->(event)',
-{batchSize: 20, iterateList:false, retries:2, params:{suffix:"&ts=20190125134059&apikey=33ee2485d7f3b3639ed66a4727ae1f6e&hash=7fac0f76a8346d00de626fa4271cfb8e"}});
+{batchSize: 20, iterateList:false, retries:2, params:{suffix:"&ts=20190322093523&apikey=33ee2485d7f3b3639ed66a4727ae1f6e&hash=c8d1cc450c721b237abad248732cdd0f"}});
 
 
 CALL apoc.load.json(c.resourceURI+"/comics?format=comic&formatType=comic&limit=100"+$suffix)

@@ -2,6 +2,7 @@ package com.spring.hack.marvel.comicissue;
 
 import com.spring.hack.marvel.creator.Creator;
 import com.spring.hack.marvel.event.Event;
+import com.spring.hack.marvel.character.Character;
 import com.spring.hack.marvel.series.Series;
 import com.spring.hack.marvel.story.Story;
 import lombok.Data;
