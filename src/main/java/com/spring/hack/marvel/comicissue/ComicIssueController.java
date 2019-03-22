@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 @AllArgsConstructor
@@ -31,12 +33,20 @@ public class ComicIssueController {
 
     @GetMapping("/buildgraph")
     @ResponseBody
-    public Map<String, Object> buildgraph(@RequestParam(required = false) Integer limit) {
-        return issueService.graph(limit == null ? 100 : limit);
+    public Map<String, Object> buildgraph(@RequestParam(required = false) String issue, @RequestParam(required = false) Integer limit) {
+        issue = issue.replace("%23", "#");
+        Iterator<ComicIssue> issuesIterator = findByNameLike("*" + issue + "*").iterator();
+        if (issuesIterator.hasNext()) {
+            ComicIssue comicIssue = issuesIterator.next();
+            return issueService.graph(comicIssue, limit == null ? 100 : limit);
+        } else {
+            return new HashMap<>();
+        }
     }
+
     @GetMapping("/graph")
-    public String graph(@RequestParam(required = false) Integer limit, Model model) {
-        model.addAttribute(buildgraph(limit));
+    public String graph(@RequestParam(required = false) String issue, @RequestParam(required = false) Integer limit, Model model) {
+        model.addAttribute(buildgraph(issue, limit));
         return "issuesgraph";
     }
 }

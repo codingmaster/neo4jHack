@@ -171,7 +171,7 @@
                         var event = issueEvent.name;
                         $eventList.append($("<li>" + event + "</li>"));
                     });
-                    render();
+                    render(name);
                 }, "json");
             return false;
         }
@@ -192,18 +192,20 @@
                 }, "json");
             return false;
         }
-        function render() {
+        function render(name) {
             d3.select("svg")
                 .remove();
             var width = 500, height = 500;
             var force = d3.layout.force()
-                .charge(-200).linkDistance(50).size([width, height]);
+                .charge(-200).linkDistance(100).size([width, height]);
             var svg = d3.select("#graph").append("svg")
                 .style("width", "100%").style("height", "100%")
                 .style("background-color", "white")
                 .attr("pointer-events", "all");
-            d3.json("/comicissues/buildgraph", function (error, graph) {
+            var issueName = `${encodeURI(name.replace('#', '%23'))}`;
+            d3.json(`/comicissues/buildgraph?issue=${issueName}`, function (error, graph) {
                 if (error) return;
+                console.log('graph', graph);
                 force
                     .nodes(graph.nodes)
                     .links(graph.links)
@@ -227,11 +229,11 @@
                     .attr("xlink:href", function(d){return d.image ? d.image: "https://www.marvel.com/static/images/favicon/favicon.ico"})
                     .attr("x", -8)
                     .attr("y", -8)
-                    .attr("width", function(d){return d.image ? 40: 20})
-                    .attr("height", function(d){return d.image ? 40: 20});
+                    .attr("width", function(d){return d.image ? 60: 20})
+                    .attr("height", function(d){return d.image ? 60: 20});
 
                 node.append("text")
-                    .attr("dx", 12)
+                    .attr("dx", function(d){return d.image ? 60: 20})
                     .attr("dy", ".15em")
                     .text(function(d){return wrap(d.name, 15)});
 

@@ -32,8 +32,9 @@ public class ComicIssueService {
         return issueRepo.findByNameLike(name);
     }
     @Transactional(readOnly = true)
-    public Map<String, Object> graph(Integer limit) {
-        return toD3Format(issueRepo.graph(limit));
+    public Map<String, Object> graph(ComicIssue issue, Integer limit) {
+        Collection<ComicIssue> graph = issueRepo.graph(issue.getId(), limit);
+        return toD3Format(graph);
     }
 
     private Map<String, Object> toD3Format(Iterable<ComicIssue> issues){
