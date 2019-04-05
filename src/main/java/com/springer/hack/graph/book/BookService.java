@@ -3,6 +3,7 @@ package com.springer.hack.graph.book;
 import com.springer.hack.graph.keyword.Keyword;
 import com.springer.hack.graph.originator.Originator;
 import com.springer.hack.graph.pmc.PMC;
+import com.springer.hack.graph.rendition.Rendition;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -70,10 +71,20 @@ public class BookService {
             }
             for (PMC pmc : book.getPmcs()) {
                 String label = "pmc";
-                Map<String, Object> comicSeries = map("name", pmc.getValue(), "label", label);
-                int source = nodes.indexOf(comicSeries);
+                Map<String, Object> bookPMCs = map("name", pmc.getValue(), "label", label);
+                int source = nodes.indexOf(bookPMCs);
                 if (source == -1) {
-                    nodes.add(comicSeries);
+                    nodes.add(bookPMCs);
+                    source = i++;
+                }
+                rels.add(map("source", source, "target", target));
+            }
+            for (Rendition rendition : book.getRenditions()) {
+                String label = "rendition";
+                Map<String, Object> bookRenditions = map("name", rendition.getIsbn(), "label", label);
+                int source = nodes.indexOf(bookRenditions);
+                if (source == -1) {
+                    nodes.add(bookRenditions);
                     source = i++;
                 }
                 rels.add(map("source", source, "target", target));

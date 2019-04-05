@@ -3,6 +3,7 @@ package com.springer.hack.graph.book;
 import com.springer.hack.graph.keyword.Keyword;
 import com.springer.hack.graph.originator.Originator;
 import com.springer.hack.graph.pmc.PMC;
+import com.springer.hack.graph.rendition.Rendition;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -34,6 +35,8 @@ public class Book {
     private List<PMC> pmcs = new ArrayList<>();
     @Relationship(type = "HAS_KEYWORD")
     private List<Keyword> keywords = new ArrayList<>();
+    @Relationship(type = "HAS_RENDITION")
+    private List<Rendition> renditions = new ArrayList<>();
 
     public List<Originator> getOriginators() {
         return originators;
@@ -46,4 +49,9 @@ public class Book {
     public List<Keyword> getKeywords() {
         return keywords;
     }
+
+    public List<Rendition> getRenditions() {
+        return renditions;
+    }
+
 }
